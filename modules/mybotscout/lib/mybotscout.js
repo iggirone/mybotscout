@@ -3,6 +3,7 @@
 /*****************/
 
 var http    = require('http');
+var https   = require('https');
 var express = require('express');
 try {
 var tz      = require('timezone/loaded');
@@ -112,7 +113,7 @@ mybotscout.prototype.PingAll = function()
         "https://mybotscout.cloudcontrolapp.com/status",
         "https://mybotscout.vdtapp.com/status"
     ].forEach((function(url) {
-        http.get(url, (function(res) {
+        (url.match(/^https/) ? https : http).get(url, (function(res) {
             if (res.statusCode == 200) {
                 var data = "";
                 res.on('data', (function(chunk) {
