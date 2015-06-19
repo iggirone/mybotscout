@@ -14,6 +14,6 @@ if ! [ -d .git ]; then
 	git remote add origin https://iggirone:essediesse0@github.com/iggirone/mybotscout4Scaling.git || exit
 fi
 git add . || exit
-git commit -m "Do better!" || exit
+git commit -a -m "Do better!" || exit
 git push -u origin master || exit
 
