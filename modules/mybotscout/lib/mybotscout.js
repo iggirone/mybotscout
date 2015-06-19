@@ -4,7 +4,7 @@
 
 var http    = require('http');
 var express = require('express');
-var tz      = require('timezone/loaded');
+var tz      = require('timezone/loaded.js');
 
 var Network = require('./Network');
 
