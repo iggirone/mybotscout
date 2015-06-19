@@ -32,7 +32,33 @@ function mybotscout(cfg)
     this.app.get('/status', this.SendStatus.bind(this));
     this.app.listen(cfg.port, cfg.addr, this.OnListening.bind(this));
 
-    this.networks = [];
+    var url = "http://iggirone.homenet.org/mybotscout/index.php/service/getServersJSON";
+    (url.match(/^https/) ? https : http).get(url, (function(res) {
+        if (res.statusCode == 200) {
+            var data = "";
+            res.on('data', (function(chunk) {
+                data += chunk;
+            }).bind(this));
+            res.on('end', (function() {
+//              this.Log(data);
+//              this.Log(JSON.stringify(JSON.parse(data)));
+                var servers = JSON.parse(data);
+                this.networks = [];
+                servers.forEach((function(server) {
+                    if (server.disabled != 1) {
+                        this.Log(server.host);
+                        this.networks[this.networks.length] = new Network(this, { host: server.host, logTime: cfg.logTime });
+                    }
+                }).bind(this));
+            }).bind(this));
+        } else {
+            this.Log("ERROR get "+url+" - BAD HTTP STATUS: " + res.statusCode);
+        }
+    }).bind(this)).on('error', (function(e) {
+        this.Log("ERROR get "+url+" - " + e.message);
+    }).bind(this));
+
+/*  this.networks = [];
     [
         'irc.FoReVeR-irc.it',
         'irc.chlame.net',
@@ -42,8 +68,8 @@ function mybotscout(cfg)
         'irc.oceanirc.net',
         'irc.oltreirc.net'
     ].forEach((function(host) {
-        this.networks[this.networks.length] = new Network(this, { host: host, logTime: false });
-    }).bind(this));
+        this.networks[this.networks.length] = new Network(this, { host: host, logTime: cfg.logTime });
+    }).bind(this)); */
 
     setInterval(this.PingAll.bind(this), 300000);
 };
@@ -117,7 +143,7 @@ mybotscout.prototype.PingAll = function()
             if (res.statusCode == 200) {
                 var data = "";
                 res.on('data', (function(chunk) {
-                      data += chunk;
+                    data += chunk;
                 }).bind(this));
                 res.on('end', (function() {
                     this.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+
