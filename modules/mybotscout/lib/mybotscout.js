@@ -105,10 +105,12 @@ mybotscout.prototype.SendStatus = function(request, response)
 mybotscout.prototype.PingAll = function()
 {
     [
-        "http://mybotscout-iggirone.rhcloud.com/status",
-        "http://mybotscout.herokuapp.com/status",
-        "http://mybotscout.dotcloudapp.com/status",
-        "http://mybotscout.apphb.com/status"
+        "https://mybotscout-iggirone.rhcloud.com/status",
+        "https://mybotscout.herokuapp.com/status",
+        "https://mybotscout.dotcloudapp.com/status",
+        "https://mybotscout.apphb.com/status",
+        "https://mybotscout.cloudcontrolapp.com/status",
+        "https://mybotscout.vdtapp.com/status"
     ].forEach((function(url) {
         http.get(url, (function(res) {
             if (res.statusCode == 200) {
