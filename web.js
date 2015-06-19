@@ -4,7 +4,7 @@
 
 var mybotscout = require('./modules/mybotscout')({
     port: (process.env.PORT || 5000),
-    logTime: false
+    logTime: true
 });
 
 /****************/

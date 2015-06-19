@@ -1,15 +1,19 @@
 cd "$(dirname "$0")" || exit
-rsync -rvuc --exclude '.*' ../../../openshift/$(basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/node_modules/ modules/ || exit
-rsync -rvuc --exclude '.*' ../../../dotcloud/$(basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/ modules/ || exit
-rsync -rvuc --exclude '.*' ../../../heroku/$(basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/ modules/ || exit
-rsync -rvuc --exclude '.*' ../../../appharbor/$(basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/ modules/ || exit
-if ! grep "$(basename "$(dirname "$(pwd)")")" "$HOME/.cloudControl/user.cfg" ; then
-	cctrluser setup --email "$(basename "$(dirname "$(pwd)")")" --ssh-auth yes --ssh-key-path "$HOME/.ssh/id_rsa.pub" || exit
-	grep "$(basename "$(dirname "$(pwd)")")" "$HOME/.cloudControl/user.cfg" || exit
+rsync -rvuc --exclude '.*' ../../../openshift/$(   basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/node_modules/ modules/ || exit
+rsync -rvuc --exclude '.*' ../../../dotcloud/$(    basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/      modules/ || exit
+rsync -rvuc --exclude '.*' ../../../heroku/$(      basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/      modules/ || exit
+rsync -rvuc --exclude '.*' ../../../appharbor/$(   basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/      modules/ || exit
+rsync -rvuc --exclude '.*' ../../../cloudcontrol/$(basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/      modules/ || exit
+rsync -rvuc --exclude '.*' modules/ ../../../openshift/$(   basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/node_modules/  || exit
+rsync -rvuc --exclude '.*' modules/ ../../../dotcloud/$(    basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/       || exit
+rsync -rvuc --exclude '.*' modules/ ../../../heroku/$(      basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/       || exit
+rsync -rvuc --exclude '.*' modules/ ../../../appharbor/$(   basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/       || exit
+rsync -rvuc --exclude '.*' modules/ ../../../cloudcontrol/$(basename "$(dirname "$(pwd)")")/$(basename "$(pwd)")/modules/       || exit
+if ! [ -d .git ]; then
+	git init || exit
+	git remote add origin https://iggirone:essediesse0@github.com/iggirone/mybotscout4Scaling.git || exit
 fi
 git add . || exit
-git commit -am "make it better" || exit
-cctrlapp $(basename "$(pwd)")/default push || exit
-cctrlapp $(basename "$(pwd)")/default deploy || exit
-cctrlapp $(basename "$(pwd)")/default log error
+git commit -m "Do better!" || exit
+git push -u origin master || exit
 
